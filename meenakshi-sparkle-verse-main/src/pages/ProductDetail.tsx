@@ -17,8 +17,17 @@ const ProductDetail = () => {
 
   useEffect(() => {
     if (!id) return;
-    supabase.from("products").select("*").eq("id", id).single().then(({ data }) => {
-      setProduct(data);
+    supabase.from("products").select("*").eq("id", id).single().then(({ data, error }) => {
+      if (error) {
+        console.warn("Failed to load product:", error.message);
+        setProduct(null);
+      } else {
+        setProduct(data);
+      }
+      setLoading(false);
+    }).catch((err) => {
+      console.warn("Error loading product:", err);
+      setProduct(null);
       setLoading(false);
     });
   }, [id]);
