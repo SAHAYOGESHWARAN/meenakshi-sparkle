@@ -15,10 +15,20 @@ const Shop = () => {
   useEffect(() => {
     const fetch = async () => {
       setLoading(true);
-      let query = supabase.from("products").select("*").eq("in_stock", true).order("created_at", { ascending: false });
-      if (activeCategory !== "all") query = query.eq("category", activeCategory);
-      const { data } = await query;
-      setProducts(data || []);
+      try {
+        let query = supabase.from("products").select("*").eq("in_stock", true).order("created_at", { ascending: false });
+        if (activeCategory !== "all") query = query.eq("category", activeCategory);
+        const { data, error } = await query;
+        if (error) {
+          console.warn("Failed to load products:", error.message);
+          setProducts([]);
+        } else {
+          setProducts(data || []);
+        }
+      } catch (err) {
+        console.warn("Error loading products:", err);
+        setProducts([]);
+      }
       setLoading(false);
     };
     fetch();

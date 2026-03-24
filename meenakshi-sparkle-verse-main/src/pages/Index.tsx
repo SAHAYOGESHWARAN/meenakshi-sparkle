@@ -12,8 +12,16 @@ const Index = () => {
   const [featured, setFeatured] = useState<Tables<"products">[]>([]);
 
   useEffect(() => {
-    supabase.from("products").select("*").eq("featured", true).limit(8).then(({ data }) => {
+    supabase.from("products").select("*").eq("featured", true).limit(8).then(({ data, error }) => {
+      if (error) {
+        console.warn("Failed to load featured products:", error.message);
+        setFeatured([]);
+        return;
+      }
       setFeatured(data || []);
+    }).catch((err) => {
+      console.warn("Error loading featured products:", err);
+      setFeatured([]);
     });
   }, []);
 
