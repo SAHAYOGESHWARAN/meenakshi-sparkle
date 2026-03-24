@@ -4,10 +4,17 @@ import { Camera, Upload, X, Loader2, Sparkles, Video, SwitchCamera } from "lucid
 import { Link } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 
+interface ScanResult {
+  match: boolean;
+  message?: string;
+  video_url?: string;
+  title?: string;
+}
+
 const ScanImage = () => {
   const [scanning, setScanning] = useState(false);
   const [preview, setPreview] = useState<string | null>(null);
-  const [result, setResult] = useState<any>(null);
+  const [result, setResult] = useState<ScanResult | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [cameraActive, setCameraActive] = useState(false);
   const [facingMode, setFacingMode] = useState<"environment" | "user">("environment");
@@ -86,8 +93,8 @@ const ScanImage = () => {
       });
       if (fnError) throw fnError;
       setResult(data);
-    } catch (err: any) {
-      setError(err.message || "Failed to scan image");
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "Failed to scan image");
     }
     setScanning(false);
   }, [captureFrame, stopCamera]);
@@ -113,8 +120,8 @@ const ScanImage = () => {
       });
       if (fnError) throw fnError;
       setResult(data);
-    } catch (err: any) {
-      setError(err.message || "Failed to scan image");
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "Failed to scan image");
     }
     setScanning(false);
   };

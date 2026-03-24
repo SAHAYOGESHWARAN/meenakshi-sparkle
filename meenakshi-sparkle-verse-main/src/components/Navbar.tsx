@@ -5,12 +5,18 @@ import { useCart } from "@/lib/cart";
 import { useAuth } from "@/lib/auth";
 import { motion, AnimatePresence } from "framer-motion";
 
+interface NavLink {
+  to: string;
+  label: string;
+  icon?: boolean;
+}
+
 const Navbar = () => {
   const [mobileOpen, setMobileOpen] = useState(false);
   const { totalItems } = useCart();
   const { user } = useAuth();
 
-  const links = [
+  const links: NavLink[] = [
     { to: "/", label: "Home" },
     { to: "/shop", label: "Shop" },
     { to: "/shop?category=gifts", label: "Gifts" },
@@ -33,9 +39,9 @@ const Navbar = () => {
             <Link
               key={l.to + l.label}
               to={l.to}
-              className={`text-sm font-medium transition-colors ${(l as any).icon ? "flex items-center gap-1 text-primary hover:text-primary/80" : "text-foreground hover:text-primary"}`}
+              className={`text-sm font-medium transition-colors ${l.icon ? "flex items-center gap-1 text-primary hover:text-primary/80" : "text-foreground hover:text-primary"}`}
             >
-              {(l as any).icon && <Sparkles className="w-3.5 h-3.5" />}
+              {l.icon && <Sparkles className="w-3.5 h-3.5" />}
               {l.label}
             </Link>
           ))}
@@ -88,10 +94,10 @@ const Navbar = () => {
                 <Link
                   key={l.to + l.label}
                   to={l.to}
-                  className={`text-sm font-medium py-2 ${(l as any).icon ? "flex items-center gap-1.5 text-primary" : "text-foreground hover:text-primary"}`}
+                  className={`text-sm font-medium py-2 ${l.icon ? "flex items-center gap-1.5 text-primary" : "text-foreground hover:text-primary"}`}
                   onClick={() => setMobileOpen(false)}
                 >
-                  {(l as any).icon && <Sparkles className="w-3.5 h-3.5" />}
+                  {l.icon && <Sparkles className="w-3.5 h-3.5" />}
                   {l.label}
                 </Link>
               ))}

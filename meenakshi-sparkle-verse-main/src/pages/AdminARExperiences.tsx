@@ -72,8 +72,8 @@ const AdminARExperiences = () => {
       const url = await uploadFile(file, "product-images", "ar-triggers");
       setForm((f) => ({ ...f, trigger_image_url: url }));
       toast.success("Image uploaded!");
-    } catch (err: any) {
-      toast.error(err.message);
+    } catch (err) {
+      toast.error(err instanceof Error ? err.message : "Upload failed");
     }
     setUploading(false);
   };
@@ -87,8 +87,8 @@ const AdminARExperiences = () => {
       const url = await uploadFile(file, "ar-videos", "videos");
       setForm((f) => ({ ...f, video_url: url }));
       toast.success("Video uploaded!");
-    } catch (err: any) {
-      toast.error(err.message);
+    } catch (err) {
+      toast.error(err instanceof Error ? err.message : "Upload failed");
     }
     setUploading(false);
   };

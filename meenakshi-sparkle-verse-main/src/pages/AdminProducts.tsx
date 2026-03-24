@@ -94,8 +94,8 @@ const AdminProducts = () => {
       const { data } = supabase.storage.from("product-images").getPublicUrl(path);
       setForm((f) => ({ ...f, images: [...f.images, data.publicUrl] }));
       toast.success("Image uploaded!");
-    } catch (err: any) {
-      toast.error(err.message || "Upload failed");
+    } catch (err) {
+      toast.error(err instanceof Error ? err.message : "Upload failed");
     }
     setUploading(false);
     e.target.value = "";
